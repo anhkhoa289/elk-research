@@ -1,0 +1,12 @@
+http.host: "0.0.0.0"
+path.config: /usr/share/logstash/pipeline
+
+# xpack:
+#   monitoring:
+#     enabled: true
+#     elasticsearch:
+#       username: 'elastic'
+#       password: 'MOZVe7Ue_Wey9DpF6n*5'
+#       hosts: ["http://elasticsearch:9200"]
+#       ssl:
+#         verification_mode: none

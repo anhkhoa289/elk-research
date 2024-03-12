@@ -1,21 +1,56 @@
 version: '3'
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
     environment:
       - discovery.type=single-node
+      - xpack.security.enabled=true
+      - xpack.security.enrollment.enabled=true
+      - xpack.security.http.ssl.enabled=false
     ports:
       - "9200:9200"
 
-  logstash:
-    image: docker.elastic.co/logstash/logstash:7.10.0
-    volumes:
-      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
-      - ./logstash/pipeline:/usr/share/logstash/pipeline
-    ports:
-      - "5000:5000"
-
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.10.0
+    image: docker.elastic.co/kibana/kibana:8.12.2
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./elk/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - "5601:5601"
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.12.2
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./elk/logstash/pipeline:/usr/share/logstash/pipeline
+    ports:
+      - "5044:5044"
+  
+  # filebeat:
+  #   image: docker.elastic.co/beats/filebeat:8.12.2
+  #   depends_on:
+  #     - logstash
+  #   volumes:
+  #     - ./elk/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+  #   ports:
+  #     - "6000:6000"
+
+  # fleet-server:
+  #   image: docker.elastic.co/beats/elastic-agent:8.12.2
+  #   environment:
+  #     - FLEET_SERVER_ENABLE=true
+  #     - FLEET_SERVER_HOST=127.0.0.1:8220
+  #     - ELASTICSEARCH_HOST=http://elasticsearch:9200
+  #     - ELASTICSEARCH_PORT=9200
+  #     - FLEET_SERVER_ES=https://elasticsearch:9200
+  #     - FLEET_SERVER_SERVICE_TOKEN=AAEAAWVsYXN0aWMvZmxlZXQtc2VydmVyL3Rva2VuLTE3MDk3MDA5MDE3MTA6cVR1NTlraHZSazZ1cmRydUQwNzN3UQ
+  #     - FLEET_SERVER_POLICY=fleet-server-policy
+  #     - FLEET_SERVER_ES_CA_TRUSTED_FINGERPRINT=96540722a20cfafabed7004cbd804402fc930dfbc117e63b6a4b656c5485391f
+  #     - FLEET_SERVER_PORT=8220
+  #   ports:
+  #     - "8220:8220"
+  #   depends_on:
+  #     - elasticsearch
