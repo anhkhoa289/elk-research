@@ -1,7 +1,8 @@
 filebeat.inputs:
-- type: tcp
-  max_message_size: 10MiB
-  host: "localhost:6000"
+- type: filestream
+  id: laravel
+  paths:
+    - /var/log/laravel/laravel-*.log
 
 output.logstash:
-  hosts: ["logstash:5044"]
+  hosts: ["logstash:5045"]

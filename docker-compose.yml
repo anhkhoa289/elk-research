@@ -28,15 +28,15 @@ services:
       - ./elk/logstash/pipeline:/usr/share/logstash/pipeline
     ports:
       - "5044:5044"
+      - "5045:5045"
   
-  # filebeat:
-  #   image: docker.elastic.co/beats/filebeat:8.12.2
-  #   depends_on:
-  #     - logstash
-  #   volumes:
-  #     - ./elk/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
-  #   ports:
-  #     - "6000:6000"
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.12.2
+    depends_on:
+      - logstash
+    volumes:
+      - ./elk/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./storage/logs:/var/log/laravel
 
   # fleet-server:
   #   image: docker.elastic.co/beats/elastic-agent:8.12.2
