@@ -23,3 +23,5 @@
 
 - [Filebeat Input](https://www.elastic.co/guide/en/beats/filebeat/current/configuration-filebeat-options.html)
 - [Logstash Input](https://www.elastic.co/guide/en/logstash/current/input-plugins.html)
+- [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html)
+- [Laravel - Filebeat Integration](https://medium.com/@maheshwar.ramkrushna/setting-up-elk-stack-for-monitoring-laravel-logs-5547a6687ab4)
