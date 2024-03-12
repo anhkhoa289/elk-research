@@ -30,3 +30,8 @@ Route::get('/_aliases', function () use ($client) {
     $response = $client->get('_aliases');
     return response()->json($response->object());
 });
+
+Route::get('/_search', function () use ($client) {
+    $response = $client->get('laravel-logs-2024.03.12/_search');
+    return response()->json($response->object());
+});
